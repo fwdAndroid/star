@@ -3,6 +3,7 @@ import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/screens/dasboard/pulip_dashboard.dart';
 import 'package:star/screens/registration/instructor_registration.dart';
 import 'package:star/screens/registration/pulip_registration.dart';
+import 'package:star/services/auth.dart';
 import 'package:star/utils/colors.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -68,7 +69,16 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 }
 
-class Tab1Screen extends StatelessWidget {
+class Tab1Screen extends StatefulWidget {
+  @override
+  State<Tab1Screen> createState() => _Tab1ScreenState();
+}
+
+class _Tab1ScreenState extends State<Tab1Screen> {
+  TextEditingController _instructorEmailController = TextEditingController();
+
+  TextEditingController _instructorPasswordController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -77,24 +87,55 @@ class Tab1Screen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            controller: _instructorEmailController,
             decoration: InputDecoration(hintText: "Email"),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            controller: _instructorPasswordController,
             decoration: InputDecoration(hintText: "Password"),
           ),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (builder) => InstructorDashboard()));
+          onPressed: () async {
+            if (_instructorEmailController.text.isEmpty) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text("Email is Required")));
+            } else if (_instructorPasswordController.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Password is Required")));
+            } else {
+              setState(() {
+                isLoading = true;
+              });
+              String rse = await AuthMethods().loginUpUser(
+                email: _instructorEmailController.text.trim(),
+                pass: _instructorPasswordController.text,
+              );
+
+              print(rse);
+              setState(() {
+                isLoading = false;
+              });
+              if (rse == 'sucess') {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => InstructorDashboard()));
+              } else {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(rse)));
+              }
+            }
           },
-          child: Text(
-            "Sign In",
-            style: TextStyle(color: Colors.white),
-          ),
+          child: isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Text(
+                  "Sign In",
+                  style: TextStyle(color: Colors.white),
+                ),
           style: ElevatedButton.styleFrom(
               backgroundColor: buttonColor,
               shape: RoundedRectangleBorder(
@@ -122,7 +163,18 @@ class Tab1Screen extends StatelessWidget {
   }
 }
 
-class Tab2Screen extends StatelessWidget {
+//Pulip
+
+class Tab2Screen extends StatefulWidget {
+  @override
+  State<Tab2Screen> createState() => _Tab2ScreenState();
+}
+
+class _Tab2ScreenState extends State<Tab2Screen> {
+  bool _isLoading = false;
+  TextEditingController _pulipEmailController = TextEditingController();
+
+  TextEditingController _pulipPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -131,19 +183,46 @@ class Tab2Screen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            controller: _pulipEmailController,
             decoration: InputDecoration(hintText: "Email"),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
+            controller: _pulipPasswordController,
             decoration: InputDecoration(hintText: "Password"),
           ),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (builder) => PulipDashboard()));
+          onPressed: () async {
+            if (_pulipEmailController.text.isEmpty) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text("Email is Required")));
+            } else if (_pulipPasswordController.text.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Password is Required")));
+            } else {
+              setState(() {
+                _isLoading = true;
+              });
+              String rse = await AuthMethods().loginUpUser(
+                email: _pulipEmailController.text.trim(),
+                pass: _pulipPasswordController.text,
+              );
+
+              print(rse);
+              setState(() {
+                _isLoading = false;
+              });
+              if (rse == 'sucess') {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (builder) => PulipDashboard()));
+              } else {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(rse)));
+              }
+            }
           },
           child: Text(
             "Sign In",

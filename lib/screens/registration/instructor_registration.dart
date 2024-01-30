@@ -2,8 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:star/screens/dasboard/instructor_dashboard.dart';
+import 'package:star/services/auth.dart';
 import 'package:star/utils/colors.dart';
+import 'package:star/utils/image_pick.dart';
 
 class InstructorRegistration extends StatefulWidget {
   const InstructorRegistration({super.key});
@@ -14,8 +17,8 @@ class InstructorRegistration extends StatefulWidget {
 
 class _InstructorRegistrationState extends State<InstructorRegistration> {
   Uint8List? _file;
-  TextEditingController _clubController = TextEditingController();
-  TextEditingController _clubDescriptionController = TextEditingController();
+  TextEditingController _fullName = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   bool _isLoading = false;
   @override
@@ -65,7 +68,7 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _clubController,
+                  controller: _fullName,
                   decoration: InputDecoration(
                       labelText: 'Full Name',
                       border: InputBorder.none,
@@ -92,7 +95,7 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _clubDescriptionController,
+                  controller: _emailController,
                   decoration: InputDecoration(
                       labelText: 'Email',
                       border: InputBorder.none,
@@ -119,7 +122,7 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _emailController,
+                  controller: _passwordController,
                   decoration: InputDecoration(
                       labelText: 'Password',
                       border: InputBorder.none,
@@ -146,7 +149,7 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _emailController,
+                  controller: _passwordController,
                   decoration: InputDecoration(
                       labelText: 'Confirm Password',
                       border: InputBorder.none,
@@ -187,11 +190,42 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
                                         borderRadius:
                                             BorderRadius.circular(30))),
                                 onPressed: () async {
+                                  if (_fullName.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text("Name is Required")));
+                                  } else if (_emailController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("Email is Required")));
+                                  } else if (_passwordController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("Password is Required")));
+                                  } else {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    await AuthMethods().instructorRegistration(
+                                        email: _emailController.text,
+                                        pass: _passwordController.text,
+                                        username: _fullName.text,
+                                        file: _file!);
+                                  }
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (builder) =>
                                               InstructorDashboard()));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text("Registration Complete")));
                                 },
                                 child: Text(
                                   "Register",
@@ -209,9 +243,9 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
 //Functions
   /// Select Image From Gallery
   _selectImage() async {
-    // Uint8List ui = await pickImage(ImageSource.gallery);
-    // setState(() {
-    //   _file = ui;
-    // });
+    Uint8List ui = await pickImage(ImageSource.gallery);
+    setState(() {
+      _file = ui;
+    });
   }
 }

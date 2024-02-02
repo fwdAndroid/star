@@ -3,7 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:star/utils/colors.dart';
 
 class PulipProfileInsturctor extends StatefulWidget {
-  const PulipProfileInsturctor({super.key});
+  final pic;
+  final mobile;
+  final email;
+  final address;
+  final name;
+  PulipProfileInsturctor(
+      {super.key,
+      required this.name,
+      required this.address,
+      required this.email,
+      required this.mobile,
+      required this.pic});
 
   @override
   State<PulipProfileInsturctor> createState() => _PulipProfileInsturctorState();
@@ -30,9 +41,11 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
-                  child: Image.asset(
-                "assets/add.png",
-                height: 150,
+                  child: CircleAvatar(
+                backgroundImage: NetworkImage(
+                  widget.pic,
+                ),
+                radius: 70,
               )),
             ),
           ),
@@ -59,7 +72,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    'Jacob West',
+                    widget.name,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -93,7 +106,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    'fwdkaleem@gmail.com',
+                    widget.email,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -127,7 +140,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    'Eden Garden',
+                    widget.address,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -161,7 +174,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    '+0273283294',
+                    widget.mobile,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/add_pupil.dart';
+import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_profile_instructor.dart';
 import 'package:star/utils/colors.dart';
 
 class InstructorHomePage extends StatefulWidget {
@@ -235,7 +236,19 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                             ),
                             // Add more fields as needed
                             trailing: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (builder) =>
+                                              PulipProfileInsturctor(
+                                                name: data['username'],
+                                                address: data['address'],
+                                                email: data['email'],
+                                                mobile: data['mobileNumber'],
+                                                pic: data['photoURL'],
+                                              )));
+                                },
                                 child: Text(
                                   "View",
                                   style: TextStyle(color: bottomColor),

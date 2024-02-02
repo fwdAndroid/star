@@ -190,6 +190,12 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
                                         borderRadius:
                                             BorderRadius.circular(30))),
                                 onPressed: () async {
+                                  if (_file == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("Image is Required")));
+                                  }
                                   if (_fullName.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(

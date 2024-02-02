@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:star/screens/dasboard/pulip_dashboard.dart';
 import 'package:star/utils/colors.dart';
+import 'package:star/utils/image_pick.dart';
 
 class PulipProfileCreation extends StatefulWidget {
   const PulipProfileCreation({super.key});
@@ -15,6 +19,7 @@ class _PulipProfileCreationState extends State<PulipProfileCreation> {
   TextEditingController _clubDescriptionController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   bool _isLoading = false;
+  Uint8List? _file;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,9 +208,9 @@ class _PulipProfileCreationState extends State<PulipProfileCreation> {
 //Functions
   /// Select Image From Gallery
   _selectImage() async {
-    // Uint8List ui = await pickImage(ImageSource.gallery);
-    // setState(() {
-    //   _file = ui;
-    // });
+    Uint8List ui = await pickImage(ImageSource.gallery);
+    setState(() {
+      _file = ui;
+    });
   }
 }

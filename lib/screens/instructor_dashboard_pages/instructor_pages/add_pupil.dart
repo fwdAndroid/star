@@ -2,8 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:star/screens/dasboard/instructor_dashboard.dart';
+import 'package:star/services/auth.dart';
 import 'package:star/utils/colors.dart';
+import 'package:star/utils/image_pick.dart';
 
 class AddPupil extends StatefulWidget {
   const AddPupil({super.key});
@@ -14,9 +17,13 @@ class AddPupil extends StatefulWidget {
 
 class _AddPupilState extends State<AddPupil> {
   Uint8List? _file;
-  TextEditingController _clubController = TextEditingController();
-  TextEditingController _clubDescriptionController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _passController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
+  TextEditingController _licenseController = TextEditingController();
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -63,7 +70,7 @@ class _AddPupilState extends State<AddPupil> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _clubController,
+                  controller: _nameController,
                   decoration: InputDecoration(
                       labelText: 'Full Name',
                       border: InputBorder.none,
@@ -88,7 +95,57 @@ class _AddPupilState extends State<AddPupil> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _clubDescriptionController,
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: InputBorder.none,
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          borderSide: BorderSide(
+                            color: textColor,
+                          )),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          borderSide: BorderSide(
+                            color: textColor,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          borderSide: BorderSide(
+                            color: textColor,
+                          ))),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _passController,
+                  decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: InputBorder.none,
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          borderSide: BorderSide(
+                            color: textColor,
+                          )),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          borderSide: BorderSide(
+                            color: textColor,
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          borderSide: BorderSide(
+                            color: textColor,
+                          ))),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _addressController,
                   decoration: InputDecoration(
                       labelText: 'Address',
                       border: InputBorder.none,
@@ -113,7 +170,7 @@ class _AddPupilState extends State<AddPupil> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _emailController,
+                  controller: _cityController,
                   decoration: InputDecoration(
                       labelText: 'City',
                       border: InputBorder.none,
@@ -138,7 +195,7 @@ class _AddPupilState extends State<AddPupil> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _emailController,
+                  controller: _mobileController,
                   decoration: InputDecoration(
                       labelText: 'Mobile Number',
                       border: InputBorder.none,
@@ -163,7 +220,7 @@ class _AddPupilState extends State<AddPupil> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: _emailController,
+                  controller: _licenseController,
                   decoration: InputDecoration(
                       labelText: 'License',
                       border: InputBorder.none,
@@ -202,11 +259,59 @@ class _AddPupilState extends State<AddPupil> {
                                         borderRadius:
                                             BorderRadius.circular(12))),
                                 onPressed: () async {
+                                  if (_file == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("Image is Required")));
+                                  }
+                                  if (_nameController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text("Name is Required")));
+                                  } else if (_emailController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("Email is Required")));
+                                  } else if (_passController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("Password is Required")));
+                                  } else if (_mobileController.text.isEmpty ||
+                                      _cityController.text.isEmpty ||
+                                      _addressController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                "All Fields are required")));
+                                  } else {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    await AuthMethods().pulipRegistration(
+                                        city: _cityController.text,
+                                        email: _emailController.text,
+                                        pass: _passController.text,
+                                        address: _addressController.text,
+                                        licenseNumber: _licenseController.text,
+                                        mobileNumber: _mobileController.text,
+                                        username: _nameController.text,
+                                        file: _file!);
+                                  }
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (builder) =>
                                               InstructorDashboard()));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              "Pulip is Added Successfully")));
                                 },
                                 child: Text(
                                   "Add Pupil",
@@ -225,9 +330,9 @@ class _AddPupilState extends State<AddPupil> {
 //Functions
   /// Select Image From Gallery
   _selectImage() async {
-    // Uint8List ui = await pickImage(ImageSource.gallery);
-    // setState(() {
-    //   _file = ui;
-    // });
+    Uint8List ui = await pickImage(ImageSource.gallery);
+    setState(() {
+      _file = ui;
+    });
   }
 }

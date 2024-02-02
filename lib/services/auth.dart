@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:star/models/instructor_model.dart';
+import 'package:star/models/pulip_model.dart';
 import 'package:star/services/storage_methods.dart';
 
 class AuthMethods {
@@ -11,7 +12,7 @@ class AuthMethods {
 
 //Get Users Details
 
-  //Register User with Add User
+  //Register User with Instructor
   Future<String> instructorRegistration(
       {required String email,
       required String pass,
@@ -33,6 +34,46 @@ class AuthMethods {
             photoURL: photoURL);
         await firebaseFirestore
             .collection('users')
+            .doc(cred.user!.uid)
+            .set(instructorModel.toJson());
+        res = 'sucess';
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  //Register User with Pulip
+  Future<String> pulipRegistration(
+      {required String email,
+      required String pass,
+      required String address,
+      required String city,
+      required String licenseNumber,
+      required String mobileNumber,
+      required String username,
+      required Uint8List file}) async {
+    String res = 'Some error occured';
+    try {
+      if (email.isNotEmpty || pass.isNotEmpty | username.isNotEmpty) {
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+            email: email, password: pass);
+        String photoURL = await StorageMethods()
+            .uploadImageToStorage('ProfilePics', file, false);
+        //Add User to the database with modal
+        PulipModel instructorModel = PulipModel(
+            type: "Pulip",
+            username: username,
+            address: address,
+            liceneseNumber: licenseNumber,
+            mobileNumber: mobileNumber,
+            city: city,
+            uid: cred.user!.uid,
+            email: email,
+            photoURL: photoURL);
+        await firebaseFirestore
+            .collection('pulip')
             .doc(cred.user!.uid)
             .set(instructorModel.toJson());
         res = 'sucess';

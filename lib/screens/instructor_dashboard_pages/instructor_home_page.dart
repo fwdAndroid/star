@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/add_pupil.dart';
-import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_profile_instructor.dart';
 import 'package:star/utils/colors.dart';
 
 class InstructorHomePage extends StatefulWidget {
@@ -35,27 +36,38 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                 color: bottomColor,
               ))
         ],
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Instructor Name',
-              style: GoogleFonts.acme(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            Text(
-              'Zubair Khan',
-              style: GoogleFonts.acme(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            )
-          ],
-        ),
+        title: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("users")
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .snapshots(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return new CircularProgressIndicator();
+              }
+              var document = snapshot.data;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Instructor Name',
+                    style: GoogleFonts.acme(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    document['username'],
+                    style: GoogleFonts.acme(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              );
+            }),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -185,46 +197,69 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                 ],
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 150,
-                  height: 300,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (builder) =>
-                                      PulipProfileInsturctor()));
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                width: 150,
-                                color: bottomColor,
-                                alignment: AlignmentDirectional.topStart,
-                                margin: EdgeInsets.symmetric(vertical: 8),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 2.3,
+              child: StreamBuilder(
+                stream: getContactsStream(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No Pulips Found Yet",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final List<DocumentSnapshot> documents =
+                          snapshot.data!.docs;
+                      final Map<String, dynamic> data =
+                          documents[index].data() as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(
+                              'Pulip Name: ${data['username'].toString()}',
+                              style: TextStyle(color: bottomColor),
+                            ),
+                            subtitle: Text(
+                              'License Number: ${data['liceneseNumber'].toString()}',
+                              style: TextStyle(color: bottomColor),
+                            ),
+                            // Add more fields as needed
+                            trailing: TextButton(
+                                onPressed: () {},
                                 child: Text(
-                                  " Tayyab Ali",
-                                  style:
-                                      GoogleFonts.montserrat(color: colorwhite),
+                                  "View",
+                                  style: TextStyle(color: bottomColor),
                                 )),
-                          ],
-                        ),
+                          ),
+                          Divider(
+                            color: bottomColor.withOpacity(.4),
+                          )
+                        ],
                       );
                     },
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  //Functions
+  //Contact List
+  Stream<QuerySnapshot> getContactsStream() {
+    return FirebaseFirestore.instance.collection("pulip").snapshots();
   }
 }

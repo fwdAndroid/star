@@ -25,7 +25,11 @@ class _AuthScreenState extends State<AuthScreen> {
               color: backColor,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Image.asset("assets/logo.png"),
+                child: Image.asset(
+                  "assets/logo.png",
+                  height: 280,
+                  width: MediaQuery.of(context).size.width,
+                ),
               ),
             ),
             Align(
@@ -81,84 +85,86 @@ class _Tab1ScreenState extends State<Tab1Screen> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: _instructorEmailController,
-            decoration: InputDecoration(hintText: "Email"),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: _instructorPasswordController,
-            decoration: InputDecoration(hintText: "Password"),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_instructorEmailController.text.isEmpty) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text("Email is Required")));
-            } else if (_instructorPasswordController.text.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Password is Required")));
-            } else {
-              setState(() {
-                isLoading = true;
-              });
-              String rse = await AuthMethods().loginUpUser(
-                email: _instructorEmailController.text.trim(),
-                pass: _instructorPasswordController.text,
-              );
-
-              print(rse);
-              setState(() {
-                isLoading = false;
-              });
-              if (rse == 'sucess') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (builder) => InstructorDashboard()));
-              } else {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(rse)));
-              }
-            }
-          },
-          child: isLoading
-              ? Center(child: CircularProgressIndicator())
-              : Text(
-                  "Sign In",
-                  style: TextStyle(color: Colors.white),
-                ),
-          style: ElevatedButton.styleFrom(
-              backgroundColor: buttonColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              fixedSize: Size(301, 45)),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (builder) => InstructorRegistration()));
-          },
-          child: Padding(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Click here to register an account",
-              style: TextStyle(color: unselectedLabel),
+            child: TextFormField(
+              controller: _instructorEmailController,
+              decoration: InputDecoration(hintText: "Email"),
             ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _instructorPasswordController,
+              decoration: InputDecoration(hintText: "Password"),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (_instructorEmailController.text.isEmpty) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Email is Required")));
+              } else if (_instructorPasswordController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Password is Required")));
+              } else {
+                setState(() {
+                  isLoading = true;
+                });
+                String rse = await AuthMethods().loginUpUser(
+                  email: _instructorEmailController.text.trim(),
+                  pass: _instructorPasswordController.text,
+                );
+
+                print(rse);
+                setState(() {
+                  isLoading = false;
+                });
+                if (rse == 'sucess') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => InstructorDashboard()));
+                } else {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(rse)));
+                }
+              }
+            },
+            child: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Text(
+                    "Sign In",
+                    style: TextStyle(color: Colors.white),
+                  ),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: buttonColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                fixedSize: Size(301, 45)),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (builder) => InstructorRegistration()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Click here to register an account",
+                style: TextStyle(color: unselectedLabel),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -177,78 +183,82 @@ class _Tab2ScreenState extends State<Tab2Screen> {
   TextEditingController _pulipPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: _pulipEmailController,
-            decoration: InputDecoration(hintText: "Email"),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            controller: _pulipPasswordController,
-            decoration: InputDecoration(hintText: "Password"),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_pulipEmailController.text.isEmpty) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text("Email is Required")));
-            } else if (_pulipPasswordController.text.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Password is Required")));
-            } else {
-              setState(() {
-                _isLoading = true;
-              });
-              String rse = await AuthMethods().loginUpUser(
-                email: _pulipEmailController.text.trim(),
-                pass: _pulipPasswordController.text,
-              );
-
-              print(rse);
-              setState(() {
-                _isLoading = false;
-              });
-              if (rse == 'sucess') {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (builder) => PulipDashboard()));
-              } else {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(rse)));
-              }
-            }
-          },
-          child: Text(
-            "Sign In",
-            style: TextStyle(color: Colors.white),
-          ),
-          style: ElevatedButton.styleFrom(
-              backgroundColor: buttonColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              fixedSize: Size(301, 45)),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (builder) => PulipRegistration()));
-          },
-          child: Padding(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Click here to register an account",
-              style: TextStyle(color: unselectedLabel),
+            child: TextFormField(
+              controller: _pulipEmailController,
+              decoration: InputDecoration(hintText: "Email"),
             ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _pulipPasswordController,
+              decoration: InputDecoration(hintText: "Password"),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              if (_pulipEmailController.text.isEmpty) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Email is Required")));
+              } else if (_pulipPasswordController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Password is Required")));
+              } else {
+                setState(() {
+                  _isLoading = true;
+                });
+                String rse = await AuthMethods().loginUpUser(
+                  email: _pulipEmailController.text.trim(),
+                  pass: _pulipPasswordController.text,
+                );
+
+                print(rse);
+                setState(() {
+                  _isLoading = false;
+                });
+                if (rse == 'sucess') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => PulipDashboard()));
+                } else {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(rse)));
+                }
+              }
+            },
+            child: Text(
+              "Sign In",
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: buttonColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                fixedSize: Size(301, 45)),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (builder) => PulipRegistration()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Click here to register an account",
+                style: TextStyle(color: unselectedLabel),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

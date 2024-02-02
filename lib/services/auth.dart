@@ -26,6 +26,7 @@ class AuthMethods {
             .uploadImageToStorage('ProfilePics', file, false);
         //Add User to the database with modal
         InstructorModel instructorModel = InstructorModel(
+            type: "Instructor",
             username: username,
             uid: cred.user!.uid,
             email: email,

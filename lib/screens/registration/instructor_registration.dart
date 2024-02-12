@@ -180,63 +180,79 @@ class _InstructorRegistrationState extends State<InstructorRegistration> {
                         child: CircularProgressIndicator(),
                       )
                     : Center(
-                        child: _isLoading
-                            ? Center(child: CircularProgressIndicator())
-                            : ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: buttonColor,
-                                    fixedSize: Size(300, 50),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30))),
-                                onPressed: () async {
-                                  if (_file == null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content:
-                                                Text("Image is Required")));
-                                  }
-                                  if (_fullName.text.isEmpty) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text("Name is Required")));
-                                  } else if (_emailController.text.isEmpty) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content:
-                                                Text("Email is Required")));
-                                  } else if (_passwordController.text.isEmpty) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content:
-                                                Text("Password is Required")));
-                                  } else {
-                                    setState(() {
-                                      _isLoading = true;
-                                    });
-                                    await AuthMethods().instructorRegistration(
-                                        email: _emailController.text,
-                                        pass: _passwordController.text,
-                                        username: _fullName.text,
-                                        file: _file!);
-                                  }
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (builder) =>
-                                              InstructorDashboard()));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content:
-                                              Text("Registration Complete")));
-                                },
-                                child: Text(
-                                  "Register",
-                                  style: TextStyle(color: Colors.white),
-                                )),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: buttonColor,
+                            fixedSize: Size(300, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_file == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Image is Required")),
+                              );
+                            } else if (_fullName.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Name is Required")),
+                              );
+                            } else if (_emailController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Email is Required")),
+                              );
+                            } else if (_passwordController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Password is Required")),
+                              );
+                            } else {
+                              try {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                // Await the registration process
+                                await AuthMethods().instructorRegistration(
+                                    email: _emailController.text,
+                                    pass: _passwordController.text,
+                                    username: _fullName.text,
+                                    file: _file!,
+                                    context: context);
+
+                                // Set isLoading to false after successful registration
+                                setState(() {
+                                  _isLoading = false;
+                                });
+
+                                // Show a snackbar for successful registration
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("Registration Complete")),
+                                );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (builder) => InstructorDashboard(),
+                                  ),
+                                );
+                              } catch (e) {
+                                // Handle errors during registration
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          "Error during registration: $e")),
+                                );
+                              }
+                            }
+                          },
+                          child: Text(
+                            "Register",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ),
               )
             ],

@@ -2,8 +2,10 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:star/models/instructor_model.dart';
 import 'package:star/models/pulip_model.dart';
+import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/services/storage_methods.dart';
 
 class AuthMethods {
@@ -15,6 +17,7 @@ class AuthMethods {
   //Register User with Instructor
   Future<String> instructorRegistration(
       {required String email,
+      required BuildContext context,
       required String pass,
       required String username,
       required Uint8List file}) async {
@@ -33,9 +36,10 @@ class AuthMethods {
             email: email,
             photoURL: photoURL);
         await firebaseFirestore
-            .collection('users')
+            .collection('instructors')
             .doc(cred.user!.uid)
             .set(instructorModel.toJson());
+
         res = 'sucess';
       }
     } catch (e) {

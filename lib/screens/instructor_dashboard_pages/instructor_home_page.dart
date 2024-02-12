@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/add_pupil.dart';
+import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lessons.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_profile_instructor.dart';
 import 'package:star/utils/colors.dart';
 
@@ -30,16 +31,20 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.notifications,
-                color: bottomColor,
+          TextButton.icon(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (builder) => Lessons()));
+              },
+              icon: Icon(Icons.play_lesson_sharp),
+              label: Text(
+                "Lessons",
+                style: TextStyle(color: bottomColor),
               ))
         ],
         title: StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection("users")
+                .collection("instructors")
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .snapshots(),
             builder: (context, AsyncSnapshot snapshot) {

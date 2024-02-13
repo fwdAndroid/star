@@ -7,3 +7,4 @@ final textColor = Color(0xff262628);
 final unselectedLabel = Color(0xffC8C7CC);
 final bottomColor = Color(0xff073C81);
 final fillColors = Color(0xFFF6F6F6);
+final colorDelete = Colors.red;

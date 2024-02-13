@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -195,6 +196,7 @@ class _AddPupilState extends State<AddPupil> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _mobileController,
                   decoration: InputDecoration(
                       labelText: 'Mobile Number',
@@ -292,6 +294,8 @@ class _AddPupilState extends State<AddPupil> {
                                     });
                                     await AuthMethods().pulipRegistration(
                                         city: _cityController.text,
+                                        instructorUid: FirebaseAuth
+                                            .instance.currentUser!.uid,
                                         email: _emailController.text,
                                         pass: _passController.text,
                                         address: _addressController.text,

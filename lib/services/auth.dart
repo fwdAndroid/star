@@ -57,6 +57,7 @@ class AuthMethods {
       required String licenseNumber,
       required String mobileNumber,
       required String username,
+      required String instructorUid,
       required Uint8List file}) async {
     String res = 'Some error occured';
     try {
@@ -70,10 +71,12 @@ class AuthMethods {
             type: "Pulip",
             username: username,
             address: address,
+            status: "active",
             liceneseNumber: licenseNumber,
             mobileNumber: mobileNumber,
             city: city,
             uid: cred.user!.uid,
+            instructorUid: instructorUid,
             email: email,
             photoURL: photoURL);
         await firebaseFirestore

@@ -36,7 +36,10 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (builder) => Lessons()));
               },
-              icon: Icon(Icons.play_lesson_sharp),
+              icon: Icon(
+                Icons.play_lesson_sharp,
+                color: bottomColor,
+              ),
               label: Text(
                 "Lessons",
                 style: TextStyle(color: bottomColor),
@@ -214,10 +217,10 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                     );
                   }
                   if (snapshot.data!.docs.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         "No Pulips Found Yet",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: textColor),
                       ),
                     );
                   }

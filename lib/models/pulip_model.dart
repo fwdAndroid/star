@@ -10,7 +10,9 @@ class PulipModel {
   String address;
   String mobileNumber;
   String city;
+  String instructorUid;
   String liceneseNumber;
+  String status;
 
   PulipModel(
       {required this.uid,
@@ -18,7 +20,9 @@ class PulipModel {
       required this.photoURL,
       required this.type,
       required this.address,
+      required this.instructorUid,
       required this.city,
+      required this.status,
       required this.liceneseNumber,
       required this.mobileNumber,
       required this.username});
@@ -30,6 +34,8 @@ class PulipModel {
         "city": city,
         'email': email,
         'photoURL': photoURL,
+        "instructorUid": instructorUid,
+        "status": status,
         "type": type,
         "mobileNumber": mobileNumber,
         "liceneseNumber": liceneseNumber,
@@ -44,8 +50,10 @@ class PulipModel {
         username: snapshot['username'],
         uid: snapshot['uid'],
         email: snapshot['email'],
+        status: snapshot['status'],
         photoURL: snapshot['photoURL'],
         city: snapshot['city'],
+        instructorUid: snapshot['instructorUid'],
         address: snapshot['address'],
         liceneseNumber: snapshot['liceneseNumber'],
         mobileNumber: snapshot['mobileNumber'],

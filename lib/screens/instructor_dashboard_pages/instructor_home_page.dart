@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/add_pupil.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lessons.dart';
+import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_lessons/add_pulip_lessons.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_profile_instructor.dart';
 import 'package:star/utils/colors.dart';
 
@@ -111,26 +112,29 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 253,
-                    height: 25,
-                    child: Text(
-                      'Upcoming Lessons',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFF2D394E),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
+                  Text(
+                    'Upcoming Lessons',
+                    style: GoogleFonts.montserrat(
+                      color: Color(0xFF2D394E),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Text(
-                    'See All',
-                    style: GoogleFonts.montserrat(
-                      color: Color(0xFFABABAB),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => PulipLessons()));
+                      },
+                      child: Text(
+                        'Add Lessons',
+                        style: GoogleFonts.montserrat(
+                          color: Color(0xFFABABAB),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ))
                 ],
               ),
             ),

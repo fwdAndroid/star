@@ -138,46 +138,69 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                 ],
               ),
             ),
+            //Show Add Pulip Lessons
             SizedBox(
               height: 300,
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      children: [
-                        // Display the time
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                  color: bottomColor,
-                                  child: Text(
-                                    "7:00 AM",
-                                    style: GoogleFonts.montserrat(
-                                        color: colorwhite),
-                                  )),
-                              Container(
-                                  color: bottomColor,
-                                  child: Text(
-                                    "  12/05/24",
-                                    style: GoogleFonts.montserrat(
-                                        color: colorwhite),
-                                  )),
-                            ],
+              child: StreamBuilder(
+                stream: getPulipLesson(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "No Upcoming Lesson",
+                        style: TextStyle(color: textColor),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final List<DocumentSnapshot> documents =
+                          snapshot.data!.docs;
+                      final Map<String, dynamic> data =
+                          documents[index].data() as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(
+                              'Pulip Name: ${data['pulipName'].toString()}',
+                              style: TextStyle(color: bottomColor),
+                            ),
+                            subtitle: Text(
+                              'Lesson Day: ${data['date'].toString()}',
+                              style: TextStyle(color: bottomColor),
+                            ),
+                            // Add more fields as needed
+                            trailing: TextButton(
+                                onPressed: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (builder) =>
+                                  //             PulipProfileInsturctor(
+                                  //               name: data['username'],
+                                  //               address: data['address'],
+                                  //               email: data['email'],
+                                  //               mobile: data['mobileNumber'],
+                                  //               pic: data['photoURL'],
+                                  //             )));
+                                },
+                                child: Text(
+                                  "View",
+                                  style: TextStyle(color: bottomColor),
+                                )),
                           ),
-                        ),
-
-                        SizedBox(width: 6),
-                        Container(
-                            color: bottomColor,
-                            child: Text(
-                              "English",
-                              style: GoogleFonts.montserrat(color: colorwhite),
-                            )),
-                      ],
-                    ),
+                          Divider(
+                            color: bottomColor.withOpacity(.4),
+                          )
+                        ],
+                      );
+                    },
                   );
                 },
               ),
@@ -210,8 +233,9 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                 ],
               ),
             ),
+            //Show Pulips
             SizedBox(
-              height: MediaQuery.of(context).size.height / 2.3,
+              height: 300,
               child: StreamBuilder(
                 stream: getContactsStream(),
                 builder: (context, snapshot) {
@@ -285,6 +309,18 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
   //Functions
   //Contact List
   Stream<QuerySnapshot> getContactsStream() {
-    return FirebaseFirestore.instance.collection("pulip").snapshots();
+    return FirebaseFirestore.instance
+        .collection("pulip")
+        .where("instructorUid",
+            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+  }
+
+  //Pulip Lesson
+  Stream<QuerySnapshot> getPulipLesson() {
+    return FirebaseFirestore.instance
+        .collection("pulipLessons")
+        .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
   }
 }

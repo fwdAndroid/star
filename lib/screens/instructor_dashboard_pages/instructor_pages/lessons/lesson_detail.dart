@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/utils/colors.dart';
 
 class LessonDetail extends StatefulWidget {
@@ -8,6 +10,7 @@ class LessonDetail extends StatefulWidget {
   final pulipName;
   final status;
   final subject;
+  final uuid;
   LessonDetail({
     super.key,
     required this.pulipName,
@@ -15,6 +18,7 @@ class LessonDetail extends StatefulWidget {
     required this.status,
     required this.subject,
     required this.date,
+    required this.uuid,
   });
 
   @override
@@ -22,6 +26,7 @@ class LessonDetail extends StatefulWidget {
 }
 
 class _LessonDetailState extends State<LessonDetail> {
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,7 +206,51 @@ class _LessonDetailState extends State<LessonDetail> {
                 )
               ],
             ),
-          )
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Center(
+                      child: _isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: buttonColor,
+                                  fixedSize: Size(300, 50),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12))),
+                              onPressed: () async {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                await FirebaseFirestore.instance
+                                    .collection("pulipLessons")
+                                    .doc(widget.uuid)
+                                    .update({"status": "inactive"});
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (builder) =>
+                                            InstructorDashboard()));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text("Lecture Completed")));
+                              },
+                              child: Text(
+                                "Lecture Complete",
+                                style: TextStyle(color: Colors.white),
+                              )),
+                    ),
+            ),
+          ),
         ],
       ),
     );

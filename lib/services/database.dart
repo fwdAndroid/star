@@ -75,6 +75,7 @@ class DatabaseMethods {
       var uuid = Uuid().v4();
       //Add User to the database with modal
       PulipLessonModel instructorModel = PulipLessonModel(
+        status: "active",
         time: time,
         uuid: uuid,
         pulipName: pulipName,

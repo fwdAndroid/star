@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/add_pupil.dart';
+import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lesson_detail.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lessons.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_lessons/add_pulip_lessons.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_lessons/pulip_list.dart';
@@ -178,17 +179,17 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                           // Add more fields as needed
                           trailing: TextButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (builder) =>
-                                //             PulipProfileInsturctor(
-                                //               name: data['username'],
-                                //               address: data['address'],
-                                //               email: data['email'],
-                                //               mobile: data['mobileNumber'],
-                                //               pic: data['photoURL'],
-                                //             )));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (builder) => LessonDetail(
+                                              uuid: data['uuid'],
+                                              pulipName: data['pulipName'],
+                                              time: data['time'],
+                                              date: data['date'],
+                                              status: data['status'],
+                                              subject: data['subject'],
+                                            )));
                               },
                               child: Text(
                                 "View",
@@ -326,6 +327,7 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
     return FirebaseFirestore.instance
         .collection("pulipLessons")
         .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where("status", isEqualTo: "active")
         .snapshots();
   }
 }

@@ -107,6 +107,7 @@ class _InstructorCalenderState extends State<InstructorCalender> {
                                       builder: (builder) => LessonDetail(
                                             pulipName: data['pulipName'],
                                             time: data['time'],
+                                            uuid: data['uuid'],
                                             status: data['status'],
                                             date: data['date'],
                                             subject: data['subject'],

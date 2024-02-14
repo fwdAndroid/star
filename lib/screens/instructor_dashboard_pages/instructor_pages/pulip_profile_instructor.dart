@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:star/screens/instructor_dashboard_pages/report/pupil_report.dart';
 import 'package:star/utils/colors.dart';
 
 class PulipProfileInsturctor extends StatefulWidget {
@@ -9,6 +11,7 @@ class PulipProfileInsturctor extends StatefulWidget {
   final address;
   final name;
   final status;
+  final id;
   PulipProfileInsturctor(
       {super.key,
       required this.name,
@@ -16,7 +19,8 @@ class PulipProfileInsturctor extends StatefulWidget {
       required this.email,
       required this.status,
       required this.mobile,
-      required this.pic});
+      required this.pic,
+      required this.id});
 
   @override
   State<PulipProfileInsturctor> createState() => _PulipProfileInsturctorState();
@@ -221,6 +225,22 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
               ],
             ),
           ),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => PupilReport(
+                              instrutorId:
+                                  FirebaseAuth.instance.currentUser!.uid,
+                              pupilName: widget.name,
+                              pupilId: widget.id,
+                            )));
+              },
+              child: Text(
+                "Generate Report",
+                style: TextStyle(color: bottomColor),
+              ))
         ],
       ),
     );

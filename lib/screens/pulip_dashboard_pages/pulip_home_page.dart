@@ -195,34 +195,21 @@ class _PulipHomePageState extends State<PulipHomePage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 253,
-                    height: 25,
-                    child: Text(
-                      'Learning Progress',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFF2D394E),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+              child: SizedBox(
+                height: 25,
+                child: Text(
+                  'Learning Progress',
+                  style: GoogleFonts.montserrat(
+                    color: Color(0xFF2D394E),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                   ),
-                  Text(
-                    'See All',
-                    style: GoogleFonts.montserrat(
-                      color: Color(0xFFABABAB),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )
-                ],
+                  textAlign: TextAlign.right,
+                ),
               ),
             ),
             Center(
-              child: CustomProgressIndicator(progress: 0.97),
+              child: CustomProgressIndicator(),
             ),
           ],
         ),

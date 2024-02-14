@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomProgressPainter extends CustomPainter {
   final double progress;
@@ -42,10 +44,46 @@ class CustomProgressPainter extends CustomPainter {
   }
 }
 
-class CustomProgressIndicator extends StatelessWidget {
-  final double progress;
+class CustomProgressIndicator extends StatefulWidget {
+  @override
+  _CustomProgressIndicatorState createState() =>
+      _CustomProgressIndicatorState();
+}
 
-  CustomProgressIndicator({required this.progress});
+class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
+  double progress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Call a function to fetch progress percentage from Firestore
+    fetchProgressPercentage();
+  }
+
+  // Function to fetch progress percentage from Firestore
+  void fetchProgressPercentage() async {
+    try {
+      // Replace 'YOUR_COLLECTION' with your Firestore collection name
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('reports')
+          .where("pulipId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Access the first document's 'percentage' field from the query result
+        double percentage = querySnapshot.docs.first['percentage'];
+
+        // Update the state with the retrieved percentage
+        setState(() {
+          progress = percentage;
+        });
+      } else {
+        print('No documents found in the collection');
+      }
+    } catch (e) {
+      print('Error fetching progress: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/add_pupil.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lessons.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_lessons/add_pulip_lessons.dart';
+import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_lessons/pulip_list.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/pulip_profile_instructor.dart';
 import 'package:star/utils/colors.dart';
 
@@ -79,229 +80,232 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
               );
             }),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    fillColor: fillColors,
-                    filled: true,
-                    labelText: 'Search',
-                    border: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          color: fillColors,
-                        )),
-                    errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          color: fillColors,
-                        )),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          color: fillColors,
-                        ))),
-              ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                  fillColor: fillColors,
+                  filled: true,
+                  labelText: 'Search',
+                  border: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: fillColors,
+                      )),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: fillColors,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: fillColors,
+                      ))),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Upcoming Lessons',
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Upcoming Lessons',
+                  style: GoogleFonts.montserrat(
+                    color: Color(0xFF2D394E),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => PulipLessons()));
+                    },
+                    child: Text(
+                      'Add Lessons',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFABABAB),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ))
+              ],
+            ),
+          ),
+          //Show Add Pulip Lessons
+          SizedBox(
+            height: 200,
+            child: StreamBuilder(
+              stream: getPulipLesson(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No Upcoming Lesson",
+                      style: TextStyle(color: textColor),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final List<DocumentSnapshot> documents =
+                        snapshot.data!.docs;
+                    final Map<String, dynamic> data =
+                        documents[index].data() as Map<String, dynamic>;
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            'Pulip Name: ${data['pulipName'].toString()}',
+                            style: TextStyle(color: bottomColor),
+                          ),
+                          subtitle: Text(
+                            'Lesson Day: ${data['date'].toString()}',
+                            style: TextStyle(color: bottomColor),
+                          ),
+                          // Add more fields as needed
+                          trailing: TextButton(
+                              onPressed: () {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (builder) =>
+                                //             PulipProfileInsturctor(
+                                //               name: data['username'],
+                                //               address: data['address'],
+                                //               email: data['email'],
+                                //               mobile: data['mobileNumber'],
+                                //               pic: data['photoURL'],
+                                //             )));
+                              },
+                              child: Text(
+                                "View",
+                                style: TextStyle(color: bottomColor),
+                              )),
+                        ),
+                        Divider(
+                          color: bottomColor.withOpacity(.4),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 253,
+                  height: 25,
+                  child: Text(
+                    'Pulips',
                     style: GoogleFonts.montserrat(
                       color: Color(0xFF2D394E),
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (builder) => PulipLessons()));
-                      },
-                      child: Text(
-                        'Add Lessons',
-                        style: GoogleFonts.montserrat(
-                          color: Color(0xFFABABAB),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ))
-                ],
-              ),
-            ),
-            //Show Add Pulip Lessons
-            SizedBox(
-              height: 300,
-              child: StreamBuilder(
-                stream: getPulipLesson(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No Upcoming Lesson",
-                        style: TextStyle(color: textColor),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final List<DocumentSnapshot> documents =
-                          snapshot.data!.docs;
-                      final Map<String, dynamic> data =
-                          documents[index].data() as Map<String, dynamic>;
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(
-                              'Pulip Name: ${data['pulipName'].toString()}',
-                              style: TextStyle(color: bottomColor),
-                            ),
-                            subtitle: Text(
-                              'Lesson Day: ${data['date'].toString()}',
-                              style: TextStyle(color: bottomColor),
-                            ),
-                            // Add more fields as needed
-                            trailing: TextButton(
-                                onPressed: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (builder) =>
-                                  //             PulipProfileInsturctor(
-                                  //               name: data['username'],
-                                  //               address: data['address'],
-                                  //               email: data['email'],
-                                  //               mobile: data['mobileNumber'],
-                                  //               pic: data['photoURL'],
-                                  //             )));
-                                },
-                                child: Text(
-                                  "View",
-                                  style: TextStyle(color: bottomColor),
-                                )),
-                          ),
-                          Divider(
-                            color: bottomColor.withOpacity(.4),
-                          )
-                        ],
-                      );
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (builder) => PulipList()));
                     },
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 253,
-                    height: 25,
                     child: Text(
-                      'Pulips',
+                      'See All',
                       style: GoogleFonts.montserrat(
-                        color: Color(0xFF2D394E),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFABABAB),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
                       ),
-                    ),
-                  ),
-                  Text(
-                    'See All',
-                    style: GoogleFonts.montserrat(
-                      color: Color(0xFFABABAB),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )
-                ],
-              ),
+                    ))
+              ],
             ),
-            //Show Pulips
-            SizedBox(
-              height: 300,
-              child: StreamBuilder(
-                stream: getContactsStream(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No Pulips Found Yet",
-                        style: TextStyle(color: textColor),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final List<DocumentSnapshot> documents =
-                          snapshot.data!.docs;
-                      final Map<String, dynamic> data =
-                          documents[index].data() as Map<String, dynamic>;
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(
-                              'Pulip Name: ${data['username'].toString()}',
-                              style: TextStyle(color: bottomColor),
-                            ),
-                            subtitle: Text(
-                              'License Number: ${data['liceneseNumber'].toString()}',
-                              style: TextStyle(color: bottomColor),
-                            ),
-                            // Add more fields as needed
-                            trailing: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (builder) =>
-                                              PulipProfileInsturctor(
-                                                name: data['username'],
-                                                address: data['address'],
-                                                email: data['email'],
-                                                mobile: data['mobileNumber'],
-                                                pic: data['photoURL'],
-                                              )));
-                                },
-                                child: Text(
-                                  "View",
-                                  style: TextStyle(color: bottomColor),
-                                )),
-                          ),
-                          Divider(
-                            color: bottomColor.withOpacity(.4),
-                          )
-                        ],
-                      );
-                    },
+          ),
+          //Show Pulips
+          SizedBox(
+            height: 200,
+            child: StreamBuilder(
+              stream: getContactsStream(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              ),
+                }
+                if (snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No Pulips Found Yet",
+                      style: TextStyle(color: textColor),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final List<DocumentSnapshot> documents =
+                        snapshot.data!.docs;
+                    final Map<String, dynamic> data =
+                        documents[index].data() as Map<String, dynamic>;
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            'Pulip Name: ${data['username'].toString()}',
+                            style: TextStyle(color: bottomColor),
+                          ),
+                          subtitle: Text(
+                            'License Number: ${data['liceneseNumber'].toString()}',
+                            style: TextStyle(color: bottomColor),
+                          ),
+                          // Add more fields as needed
+                          trailing: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (builder) =>
+                                            PulipProfileInsturctor(
+                                              name: data['username'],
+                                              address: data['address'],
+                                              email: data['email'],
+                                              mobile: data['mobileNumber'],
+                                              pic: data['photoURL'],
+                                            )));
+                              },
+                              child: Text(
+                                "View",
+                                style: TextStyle(color: bottomColor),
+                              )),
+                        ),
+                        Divider(
+                          color: bottomColor.withOpacity(.4),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

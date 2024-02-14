@@ -6,6 +6,8 @@ import 'package:star/screens/auth/auth.dart';
 import 'package:star/utils/colors.dart';
 import 'package:star/utils/image_pick.dart';
 
+import 'report/report_show.dart';
+
 class InstructorProfileScreen extends StatefulWidget {
   const InstructorProfileScreen({super.key});
 
@@ -28,7 +30,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 12,
           ),
           Center(
             child: ElevatedButton(
@@ -39,7 +41,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                       return Dialog(
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(20.0)), //this right here
+                                BorderRadius.circular(12.0)), //this right here
                         child: Container(
                           height: 300,
                           child: Padding(
@@ -54,7 +56,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                                   width: 80,
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 12,
                                 ),
                                 Text(
                                   'Do you want to verify the email',
@@ -65,7 +67,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 12,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +108,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 20,
+                                      width: 12,
                                     ),
                                     InkWell(
                                       onTap: () async {
@@ -183,7 +185,32 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 12,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (builder) => ReportsShow()));
+              },
+              child: Text(
+                'Reports',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.acme(
+                  color: colorwhite,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: bottomColor,
+                  fixedSize: Size(301, 50),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8))),
+            ),
+          ),
+          const SizedBox(
+            height: 12,
           ),
           Center(
             child: ElevatedButton(
@@ -227,7 +254,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 12,
           ),
           Center(
             child: ElevatedButton(
@@ -249,7 +276,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 12,
           ),
           Center(
             child: ElevatedButton(
@@ -260,7 +287,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                       return Dialog(
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(20.0)), //this right here
+                                BorderRadius.circular(12.0)), //this right here
                         child: Container(
                           height: 300,
                           child: Padding(
@@ -275,7 +302,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                                   width: 80,
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 12,
                                 ),
                                 Text(
                                   'Oh No, Your are leaving',
@@ -288,7 +315,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 12,
                                 ),
                                 SizedBox(
                                   width: 287,
@@ -305,7 +332,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 12,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -348,7 +375,7 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 20,
+                                      width: 12,
                                     ),
                                     InkWell(
                                       onTap: () async {

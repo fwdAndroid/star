@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:star/screens/pulip_dashboard_pages/pupil_lesson/pupil_lesson_detail.dart';
+import 'package:star/screens/pulip_dashboard_pages/pupil_lesson/seee_all_lessons.dart';
 import 'package:star/utils/colors.dart';
 import 'package:star/widgets/progress_widgets.dart';
 
@@ -34,27 +38,38 @@ class _PulipHomePageState extends State<PulipHomePage> {
                 color: bottomColor,
               ))
         ],
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Pulip Name',
-              style: GoogleFonts.acme(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            Text(
-              'Zubair Khan',
-              style: GoogleFonts.acme(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            )
-          ],
-        ),
+        title: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("pulip")
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .snapshots(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return new CircularProgressIndicator();
+              }
+              var document = snapshot.data;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Pulip Name',
+                    style: GoogleFonts.acme(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    document['username'],
+                    style: GoogleFonts.acme(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              );
+            }),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -101,57 +116,89 @@ class _PulipHomePageState extends State<PulipHomePage> {
                       ),
                     ),
                   ),
-                  Text(
-                    'See All',
-                    style: GoogleFonts.montserrat(
-                      color: Color(0xFFABABAB),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => SeeAllLessons()));
+                    },
+                    child: Text(
+                      'See All',
+                      style: GoogleFonts.montserrat(
+                        color: Color(0xFFABABAB),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   )
                 ],
               ),
             ),
             SizedBox(
-              height: 300,
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      children: [
-                        // Display the time
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                  color: bottomColor,
-                                  child: Text(
-                                    "7:00 AM",
-                                    style: GoogleFonts.montserrat(
-                                        color: colorwhite),
-                                  )),
-                              Container(
-                                  color: bottomColor,
-                                  child: Text(
-                                    "  12/05/24",
-                                    style: GoogleFonts.montserrat(
-                                        color: colorwhite),
-                                  )),
-                            ],
+              height: 200,
+              child: StreamBuilder(
+                stream: getPulipLesson(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "No Upcoming Lesson",
+                        style: TextStyle(color: textColor),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final List<DocumentSnapshot> documents =
+                          snapshot.data!.docs;
+                      final Map<String, dynamic> data =
+                          documents[index].data() as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(
+                              'Instructor Name: ${data['instructorName'].toString()}',
+                              style: TextStyle(color: bottomColor),
+                            ),
+                            subtitle: Text(
+                              'Subject: ${data['subject'].toString()}',
+                              style: TextStyle(color: bottomColor),
+                            ),
+                            // Add more fields as needed
+                            trailing: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (builder) =>
+                                              LessonDetailPupil(
+                                                uuid: data['uuid'],
+                                                instructorName:
+                                                    data['instructorName'],
+                                                time: data['time'],
+                                                date: data['date'],
+                                                status: data['status'],
+                                                subject: data['subject'],
+                                              )));
+                                },
+                                child: Text(
+                                  "View",
+                                  style: TextStyle(color: bottomColor),
+                                )),
                           ),
-                        ),
-
-                        SizedBox(width: 6),
-                        Container(
-                            color: bottomColor,
-                            child: Text(
-                              "English",
-                              style: GoogleFonts.montserrat(color: colorwhite),
-                            )),
-                      ],
-                    ),
+                          Divider(
+                            color: bottomColor.withOpacity(.4),
+                          )
+                        ],
+                      );
+                    },
                   );
                 },
               ),
@@ -191,5 +238,12 @@ class _PulipHomePageState extends State<PulipHomePage> {
         ),
       ),
     );
+  }
+
+  Stream<QuerySnapshot> getPulipLesson() {
+    return FirebaseFirestore.instance
+        .collection("pulipLessons")
+        .where("status", isEqualTo: "active")
+        .snapshots();
   }
 }

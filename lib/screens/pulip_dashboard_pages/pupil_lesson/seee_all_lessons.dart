@@ -14,6 +14,14 @@ class _SeeAllLessonsState extends State<SeeAllLessons> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: colorwhite),
+        backgroundColor: bottomColor,
+        title: Text(
+          " Upcoming Lessons",
+          style: TextStyle(color: colorwhite),
+        ),
+      ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height / 1.2,
         child: StreamBuilder(

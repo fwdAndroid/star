@@ -18,16 +18,6 @@ class _PulipHomePageState extends State<PulipHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: bottomColor,
-          child: Icon(
-            Icons.add,
-            color: colorwhite,
-          ),
-          onPressed: () {
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (builder) => AddPupil()));
-          }),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [

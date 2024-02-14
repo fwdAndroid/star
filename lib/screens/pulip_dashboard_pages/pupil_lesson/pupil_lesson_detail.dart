@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/utils/colors.dart';
 
 class LessonDetailPupil extends StatefulWidget {

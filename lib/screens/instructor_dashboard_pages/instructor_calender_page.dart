@@ -35,7 +35,7 @@ class _InstructorCalenderState extends State<InstructorCalender> {
       appBar: AppBar(
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: const Text('Instructor Calender'),
+        title: const Text('Instructor Calendar'),
       ),
       body: Column(
         children: [
@@ -52,7 +52,6 @@ class _InstructorCalenderState extends State<InstructorCalender> {
               blackoutDatesTextStyle: const TextStyle(color: Colors.white),
               todayHighlightColor: bottomColor,
               appointmentTextStyle: TextStyle(color: Colors.white),
-              dataSource: _getCalendarDataSource(),
               onTap: (CalendarTapDetails details) {
                 setState(() {
                   selectedDate = details.date!;
@@ -76,10 +75,12 @@ class _InstructorCalenderState extends State<InstructorCalender> {
                 List<DocumentSnapshot> eventDocs = snapshot.data!.docs;
                 List<DocumentSnapshot> filteredEvents =
                     eventDocs.where((event) {
-                  String eventDate = event['date'] as String;
+                  String? eventDate = event['date'] as String?;
                   String selectedDateString =
                       DateFormat('dd MMM yyyy').format(selectedDate);
-                  return eventDate == selectedDateString;
+
+                  // Check for null or empty string before comparison
+                  return eventDate != null && eventDate == selectedDateString;
                 }).toList();
 
                 return SizedBox(
@@ -89,34 +90,39 @@ class _InstructorCalenderState extends State<InstructorCalender> {
                     itemBuilder: (context, index) {
                       var data =
                           filteredEvents[index].data() as Map<String, dynamic>;
+
+                      // Use null-aware operators to handle potential null values
+                      String pulipName = data['pulipName']?.toString() ?? '';
+                      String subject = data['subject']?.toString() ?? '';
+                      String time = data['time']?.toString() ?? '';
+                      String uuid = data['uuid']?.toString() ?? '';
+                      String status = data['status']?.toString() ?? '';
+                      String date = data['date']?.toString() ?? '';
+
                       return ListTile(
-                        title: Text(
-                          'Pulip Name: ${data['pulipName'].toString()}',
-                          style: TextStyle(color: bottomColor),
-                        ),
-                        subtitle: Text(
-                          'Lesson Day: ${data['subject'].toString()}',
-                          style: TextStyle(color: bottomColor),
-                        ),
-                        // Add more fields as needed
+                        title: Text('Pulip Name: $pulipName',
+                            style: TextStyle(color: bottomColor)),
+                        subtitle: Text('Lesson Day: $subject',
+                            style: TextStyle(color: bottomColor)),
                         trailing: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (builder) => LessonDetail(
-                                            pulipName: data['pulipName'],
-                                            time: data['time'],
-                                            uuid: data['uuid'],
-                                            status: data['status'],
-                                            date: data['date'],
-                                            subject: data['subject'],
-                                          )));
-                            },
-                            child: Text(
-                              "View",
-                              style: TextStyle(color: bottomColor),
-                            )),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (builder) => LessonDetail(
+                                  pulipName: pulipName,
+                                  time: time,
+                                  uuid: uuid,
+                                  status: status,
+                                  date: date,
+                                  subject: subject,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text("View",
+                              style: TextStyle(color: bottomColor)),
+                        ),
                       );
                     },
                   ),
@@ -137,32 +143,11 @@ class _InstructorCalenderState extends State<InstructorCalender> {
         .get();
 
     List<DateTime> eventDates = eventsSnapshot.docs.map((doc) {
+      String? eventDate = doc.data()['date'] as String?;
       // Adjust date parsing based on the actual format in Firestore
-      String eventDate = doc.data()['date'] as String;
-      return DateFormat('dd MMM yyyy').parse(eventDate);
+      return DateFormat('dd MMM yyyy').parse(eventDate ?? '');
     }).toList();
 
     return eventDates;
-  }
-
-  _DataSource _getCalendarDataSource() {
-    List<Appointment> appointments = [];
-
-    for (DateTime date in eventDates) {
-      appointments.add(Appointment(
-        startTime: date,
-        endTime: date.add(Duration(hours: 1)),
-        isAllDay: true,
-        color: Colors.orange,
-      ));
-    }
-
-    return _DataSource(appointments);
-  }
-}
-
-class _DataSource extends CalendarDataSource {
-  _DataSource(List<Appointment> source) {
-    appointments = source;
   }
 }

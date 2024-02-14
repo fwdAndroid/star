@@ -220,7 +220,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 )
               ],
             ),
-          )
+          ),
         ],
       ),
     );

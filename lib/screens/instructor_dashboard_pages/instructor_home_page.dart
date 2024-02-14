@@ -288,6 +288,7 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                                               email: data['email'],
                                               mobile: data['mobileNumber'],
                                               pic: data['photoURL'],
+                                              status: data['status'],
                                             )));
                               },
                               child: Text(

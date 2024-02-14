@@ -2,33 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/utils/colors.dart';
 
-class PulipProfileInsturctor extends StatefulWidget {
-  final pic;
-  final mobile;
-  final email;
-  final address;
-  final name;
+class LessonDetail extends StatefulWidget {
+  final date;
+  final time;
+  final pulipName;
   final status;
-  PulipProfileInsturctor(
-      {super.key,
-      required this.name,
-      required this.address,
-      required this.email,
-      required this.status,
-      required this.mobile,
-      required this.pic});
+  final subject;
+  LessonDetail({
+    super.key,
+    required this.pulipName,
+    required this.time,
+    required this.status,
+    required this.subject,
+    required this.date,
+  });
 
   @override
-  State<PulipProfileInsturctor> createState() => _PulipProfileInsturctorState();
+  State<LessonDetail> createState() => _LessonDetailState();
 }
 
-class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
+class _LessonDetailState extends State<LessonDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Pulip Profile',
+          'UpComing Lesson',
           style: GoogleFonts.acme(
             color: Colors.black,
             fontSize: 15,
@@ -39,24 +38,6 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                  child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  widget.pic,
-                ),
-                radius: 70,
-              )),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Divider(
-              color: textColor.withOpacity(.2),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -74,7 +55,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.name,
+                    widget.pulipName,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -96,7 +77,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
             child: Row(
               children: [
                 Text(
-                  'Email',
+                  'Subject',
                   style: GoogleFonts.abhayaLibre(
                     color: textColor,
                     fontSize: 15,
@@ -108,7 +89,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.email,
+                    widget.subject,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -130,7 +111,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
             child: Row(
               children: [
                 Text(
-                  'Address',
+                  'time',
                   style: GoogleFonts.abhayaLibre(
                     color: textColor,
                     fontSize: 15,
@@ -142,7 +123,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.address,
+                    widget.time,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -164,7 +145,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
             child: Row(
               children: [
                 Text(
-                  'Mobile',
+                  'date',
                   style: GoogleFonts.abhayaLibre(
                     color: textColor,
                     fontSize: 15,
@@ -176,7 +157,7 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.mobile,
+                    widget.date,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,

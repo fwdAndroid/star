@@ -8,6 +8,7 @@ import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/services/auth.dart';
 import 'package:star/utils/colors.dart';
 import 'package:star/utils/image_pick.dart';
+import 'package:restart_app/restart_app.dart';
 
 class AddPupil extends StatefulWidget {
   const AddPupil({super.key});
@@ -307,15 +308,12 @@ class _AddPupilState extends State<AddPupil> {
                                   setState(() {
                                     _isLoading = false;
                                   });
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (builder) =>
-                                              InstructorDashboard()));
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
                                               "Pulip is Added Successfully")));
+                                  Restart.restartApp();
                                 },
                                 child: Text(
                                   "Add Pupil",

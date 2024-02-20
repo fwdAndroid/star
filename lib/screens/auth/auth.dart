@@ -280,19 +280,19 @@ class _Tab2ScreenState extends State<Tab2Screen> {
                       ),
                       fixedSize: Size(301, 45)),
                 ),
-          // GestureDetector(
-          //   onTap: () {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (builder) => PulipRegistration()));
-          //   },
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: Text(
-          //       "Click here to register an account",
-          //       style: TextStyle(color: unselectedLabel),
-          //     ),
-          //   ),
-          // ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (builder) => PulipRegistration()));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Click here to register an account",
+                style: TextStyle(color: unselectedLabel),
+              ),
+            ),
+          ),
         ],
       ),
     );

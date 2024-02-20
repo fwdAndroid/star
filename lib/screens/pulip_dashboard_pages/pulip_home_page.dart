@@ -61,158 +61,155 @@ class _PulipHomePageState extends State<PulipHomePage> {
               );
             }),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    fillColor: fillColors,
-                    filled: true,
-                    labelText: 'Search',
-                    border: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          color: fillColors,
-                        )),
-                    errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          color: fillColors,
-                        )),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          color: fillColors,
-                        ))),
-              ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                  fillColor: fillColors,
+                  filled: true,
+                  labelText: 'Search',
+                  border: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: fillColors,
+                      )),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: fillColors,
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(
+                        color: fillColors,
+                      ))),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 253,
-                    height: 25,
-                    child: Text(
-                      'Upcoming Lessons',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFF2D394E),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 253,
+                  height: 25,
+                  child: Text(
+                    'Upcoming Lessons',
+                    style: GoogleFonts.montserrat(
+                      color: Color(0xFF2D394E),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (builder) => SeeAllLessons()));
-                    },
-                    child: Text(
-                      'See All',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFFABABAB),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 200,
-              child: StreamBuilder(
-                stream: getPulipLesson(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No Upcoming Lesson",
-                        style: TextStyle(color: textColor),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final List<DocumentSnapshot> documents =
-                          snapshot.data!.docs;
-                      final Map<String, dynamic> data =
-                          documents[index].data() as Map<String, dynamic>;
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(
-                              'Instructor Name: ${data['instructorName'].toString()}',
-                              style: TextStyle(color: bottomColor),
-                            ),
-                            subtitle: Text(
-                              'Subject: ${data['subject'].toString()}',
-                              style: TextStyle(color: bottomColor),
-                            ),
-                            // Add more fields as needed
-                            trailing: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (builder) =>
-                                              LessonDetailPupil(
-                                                uuid: data['uuid'],
-                                                instructorName:
-                                                    data['instructorName'],
-                                                time: data['time'],
-                                                date: data['date'],
-                                                status: data['status'],
-                                                subject: data['subject'],
-                                              )));
-                                },
-                                child: Text(
-                                  "View",
-                                  style: TextStyle(color: bottomColor),
-                                )),
-                          ),
-                          Divider(
-                            color: bottomColor.withOpacity(.4),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 25,
-                child: Text(
-                  'Learning Progress',
-                  style: GoogleFonts.montserrat(
-                    color: Color(0xFF2D394E),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.right,
                 ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => SeeAllLessons()));
+                  },
+                  child: Text(
+                    'See All',
+                    style: GoogleFonts.montserrat(
+                      color: Color(0xFFABABAB),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 200,
+            child: StreamBuilder(
+              stream: getPulipLesson(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No Upcoming Lesson",
+                      style: TextStyle(color: textColor),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final List<DocumentSnapshot> documents =
+                        snapshot.data!.docs;
+                    final Map<String, dynamic> data =
+                        documents[index].data() as Map<String, dynamic>;
+                    return Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            'Instructor Name: ${data['instructorName'].toString()}',
+                            style: TextStyle(color: bottomColor),
+                          ),
+                          subtitle: Text(
+                            'Subject: ${data['subject'].toString()}',
+                            style: TextStyle(color: bottomColor),
+                          ),
+                          // Add more fields as needed
+                          trailing: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (builder) => LessonDetailPupil(
+                                              uuid: data['uuid'],
+                                              instructorName:
+                                                  data['instructorName'],
+                                              time: data['time'],
+                                              date: data['date'],
+                                              status: data['status'],
+                                              subject: data['subject'],
+                                            )));
+                              },
+                              child: Text(
+                                "View",
+                                style: TextStyle(color: bottomColor),
+                              )),
+                        ),
+                        Divider(
+                          color: bottomColor.withOpacity(.4),
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 25,
+              child: Text(
+                'Learning Progress',
+                style: GoogleFonts.montserrat(
+                  color: Color(0xFF2D394E),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.right,
               ),
             ),
-            Center(
-              child: CustomProgressIndicator(),
-            ),
-          ],
-        ),
+          ),
+          Center(
+            child: CustomProgressIndicator(),
+          ),
+        ],
       ),
     );
   }

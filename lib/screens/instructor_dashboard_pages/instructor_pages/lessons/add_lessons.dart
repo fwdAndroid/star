@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lessons.dart';
 import 'package:star/services/database.dart';
 import 'package:star/utils/colors.dart';
@@ -160,7 +161,8 @@ class _AddLessonsState extends State<AddLessons> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (builder) => Lessons()));
+                                      builder: (builder) =>
+                                          InstructorDashboard()));
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       content: Text(

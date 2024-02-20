@@ -8,7 +8,8 @@ import 'package:star/services/database.dart';
 import 'package:star/utils/colors.dart';
 
 class PulipLessons extends StatefulWidget {
-  const PulipLessons({super.key});
+  final instructorName;
+  const PulipLessons({super.key, required this.instructorName});
 
   @override
   State<PulipLessons> createState() => _PulipLessonsState();
@@ -154,6 +155,7 @@ class _PulipLessonsState extends State<PulipLessons> {
                                     date: _dateController.text,
                                     subject: selectedValue!,
                                     time: _timeController.text,
+                                    instructorName: widget.instructorName,
                                     pulipName: pulip!);
                               }
                               setState(() {

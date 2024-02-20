@@ -68,6 +68,7 @@ class DatabaseMethods {
     required String subject,
     required String date,
     required String time,
+    required String instructorName,
     required String pulipName,
   }) async {
     String res = 'Some error occured';
@@ -79,6 +80,7 @@ class DatabaseMethods {
         time: time,
         uuid: uuid,
         pulipName: pulipName,
+        instructorName: instructorName,
         subject: subject,
         uid: FirebaseAuth.instance.currentUser!.uid,
         date: date,

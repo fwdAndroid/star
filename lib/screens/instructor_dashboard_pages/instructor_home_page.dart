@@ -108,37 +108,50 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                       ))),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Upcoming Lessons',
-                  style: GoogleFonts.montserrat(
-                    color: Color(0xFF2D394E),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (builder) => PulipLessons()));
-                    },
-                    child: Text(
-                      'Add Lessons',
-                      style: GoogleFonts.montserrat(
-                        color: Color(0xFFABABAB),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+          StreamBuilder<Object>(
+              stream: FirebaseFirestore.instance
+                  .collection("instructors")
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return new CircularProgressIndicator();
+                }
+                var document = snapshot.data;
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Upcoming Lessons',
+                        style: GoogleFonts.montserrat(
+                          color: Color(0xFF2D394E),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ))
-              ],
-            ),
-          ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (builder) => PulipLessons(
+                                          instructorName: document['username'],
+                                        )));
+                          },
+                          child: Text(
+                            'Add Lessons',
+                            style: GoogleFonts.montserrat(
+                              color: Color(0xFFABABAB),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ))
+                    ],
+                  ),
+                );
+              }),
           //Show Add Pulip Lessons
           SizedBox(
             height: 200,

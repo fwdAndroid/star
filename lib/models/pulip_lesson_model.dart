@@ -8,13 +8,14 @@ class PulipLessonModel {
   String time;
   String subject;
   String status;
-
+  String instructorName;
   PulipLessonModel(
       {required this.uid,
       required this.uuid,
       required this.pulipName,
       required this.time,
       required this.status,
+      required this.instructorName,
       required this.subject,
       required this.date});
 
@@ -26,6 +27,7 @@ class PulipLessonModel {
         'time': time,
         "subject": subject,
         "status": status,
+        "instructorName": instructorName,
         "pulipName": pulipName,
       };
 
@@ -39,6 +41,7 @@ class PulipLessonModel {
         uuid: snapshot['uuid'],
         status: snapshot['status'],
         time: snapshot['time'],
+        instructorName: snapshot['instructorName'],
         pulipName: snapshot['pulipName'],
         subject: snapshot['subject']);
   }

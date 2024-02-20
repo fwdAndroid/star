@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/instructor_dashboard_pages/report/pupil_report.dart';
+import 'package:star/screens/instructor_dashboard_pages/skills/show_skills.dart';
 import 'package:star/utils/colors.dart';
 
 class PulipProfileInsturctor extends StatefulWidget {
@@ -225,6 +226,19 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
               ],
             ),
           ),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => ShowSkills(
+                              name: widget.name,
+                            )));
+              },
+              child: Text(
+                "Show Pulip Skills",
+                style: TextStyle(color: bottomColor),
+              )),
           TextButton(
               onPressed: () {
                 Navigator.push(

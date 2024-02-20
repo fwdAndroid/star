@@ -115,7 +115,6 @@ class _InstructorCalenderState extends State<InstructorCalender> {
                                   uuid: uuid,
                                   status: status,
                                   date: date,
-                                  subject: subject,
                                 ),
                               ),
                             );

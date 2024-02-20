@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/add_lessons.dart';
-import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/edit_lesson.dart';
 import 'package:star/utils/colors.dart';
 import 'package:star/utils/image_pick.dart';
 

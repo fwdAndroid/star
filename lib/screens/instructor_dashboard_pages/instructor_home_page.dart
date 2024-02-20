@@ -298,12 +298,15 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                     return Column(
                       children: [
                         ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(data['photoURL']),
+                          ),
                           title: Text(
                             'Pulip Name: ${data['username'].toString()}',
                             style: TextStyle(color: bottomColor),
                           ),
                           subtitle: Text(
-                            'License Number: ${data['liceneseNumber'].toString()}',
+                            'Pulip Address: ${data['address'].toString()}',
                             style: TextStyle(color: bottomColor),
                           ),
                           // Add more fields as needed

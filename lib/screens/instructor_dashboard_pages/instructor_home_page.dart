@@ -21,16 +21,6 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: bottomColor,
-          child: Icon(
-            Icons.add,
-            color: colorwhite,
-          ),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (builder) => AddPupil()));
-          }),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
@@ -40,13 +30,41 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                     MaterialPageRoute(builder: (builder) => Lessons()));
               },
               icon: Icon(
-                Icons.play_lesson_sharp,
+                Icons.rate_review,
                 color: bottomColor,
               ),
               label: Text(
-                "Lessons",
+                "Skills",
                 style: TextStyle(color: bottomColor),
-              ))
+              )),
+          StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("instructors")
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return new CircularProgressIndicator();
+                }
+                var document = snapshot.data;
+                return TextButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) =>
+                                  AddPupil(name: document['username'])));
+                      ;
+                    },
+                    icon: Icon(
+                      Icons.play_lesson_sharp,
+                      color: bottomColor,
+                    ),
+                    label: Text(
+                      "Add Pupil",
+                      style: TextStyle(color: bottomColor),
+                    ));
+              }),
         ],
         title: StreamBuilder(
             stream: FirebaseFirestore.instance

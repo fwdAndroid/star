@@ -34,7 +34,7 @@ class _LessonsState extends State<Lessons> {
         backgroundColor: bottomColor,
         centerTitle: true,
         title: Text(
-          'Lessons',
+          'Skills Set',
           style: GoogleFonts.acme(
             color: colorwhite,
             fontSize: 25,
@@ -53,7 +53,7 @@ class _LessonsState extends State<Lessons> {
           if (snapshot.data!.docs.isEmpty) {
             return Center(
               child: Text(
-                "No Lessons Found Yet",
+                "No Skills Found Yet",
                 style: TextStyle(color: textColor),
               ),
             );
@@ -64,34 +64,26 @@ class _LessonsState extends State<Lessons> {
               final List<DocumentSnapshot> documents = snapshot.data!.docs;
               final Map<String, dynamic> data =
                   documents[index].data() as Map<String, dynamic>;
+              final List<Map<String, dynamic>> skillsList =
+                  List<Map<String, dynamic>>.from(data['skills']);
               return Column(
                 children: [
-                  ListTile(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (builder) => EditLesson()));
-                    },
-                    title: Text(
-                      'Subject: ${data['subject'].toString()}',
-                      style: TextStyle(color: bottomColor),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Date: ${data['date'].toString()}',
-                          style: TextStyle(color: bottomColor),
-                        ),
-                        Text(
-                          'Time: ${data['time'].toString()}',
-                          style: TextStyle(color: bottomColor),
-                        ),
-                      ],
-                    ),
-                    // Add more fields as needed
-                    trailing: IconButton(
+                  for (int i = 1; i < skillsList.length; i++)
+                    ListTile(
+                      leading: Text(
+                        'Pulip Name: ${data['pulipName'].toString()}',
+                        style: TextStyle(color: bottomColor),
+                      ),
+                      title: Text(
+                        'Skill Name: ${skillsList[i]['name'].toString()}',
+                        style: TextStyle(color: bottomColor),
+                      ),
+                      // ... other fields ...
+                      subtitle: Text(
+                        'Skill Rate: ${skillsList[i]['rating'].toString()}',
+                        style: TextStyle(color: bottomColor),
+                      ),
+                      trailing: IconButton(
                         onPressed: () async {
                           showDialog(
                               context: context,
@@ -275,8 +267,9 @@ class _LessonsState extends State<Lessons> {
                         icon: Icon(
                           Icons.delete,
                           color: colorDelete,
-                        )),
-                  ),
+                        ),
+                      ),
+                    ),
                   Divider(
                     color: bottomColor.withOpacity(.4),
                   )

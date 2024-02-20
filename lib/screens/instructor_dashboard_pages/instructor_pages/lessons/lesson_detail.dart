@@ -9,14 +9,13 @@ class LessonDetail extends StatefulWidget {
   final time;
   final pulipName;
   final status;
-  final subject;
+
   final uuid;
   LessonDetail({
     super.key,
     required this.pulipName,
     required this.time,
     required this.status,
-    required this.subject,
     required this.date,
     required this.uuid,
   });
@@ -61,40 +60,6 @@ class _LessonDetailState extends State<LessonDetail> {
                 SizedBox(
                   child: Text(
                     widget.pulipName,
-                    style: GoogleFonts.abhayaLibre(
-                      color: textColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Divider(
-              color: textColor.withOpacity(.2),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Subject',
-                  style: GoogleFonts.abhayaLibre(
-                    color: textColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(
-                  width: 70,
-                ),
-                SizedBox(
-                  child: Text(
-                    widget.subject,
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,

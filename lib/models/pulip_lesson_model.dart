@@ -6,7 +6,6 @@ class PulipLessonModel {
   String pulipName;
   String date;
   String time;
-  String subject;
   String status;
   String instructorName;
   PulipLessonModel(
@@ -16,7 +15,6 @@ class PulipLessonModel {
       required this.time,
       required this.status,
       required this.instructorName,
-      required this.subject,
       required this.date});
 
   ///Converting OBject into Json Object
@@ -25,7 +23,6 @@ class PulipLessonModel {
         'uid': uid,
         'uuid': uuid,
         'time': time,
-        "subject": subject,
         "status": status,
         "instructorName": instructorName,
         "pulipName": pulipName,
@@ -36,13 +33,13 @@ class PulipLessonModel {
     var snapshot = snaps.data() as Map<String, dynamic>;
 
     return PulipLessonModel(
-        date: snapshot['date'],
-        uid: snapshot['uid'],
-        uuid: snapshot['uuid'],
-        status: snapshot['status'],
-        time: snapshot['time'],
-        instructorName: snapshot['instructorName'],
-        pulipName: snapshot['pulipName'],
-        subject: snapshot['subject']);
+      date: snapshot['date'],
+      uid: snapshot['uid'],
+      uuid: snapshot['uuid'],
+      status: snapshot['status'],
+      time: snapshot['time'],
+      instructorName: snapshot['instructorName'],
+      pulipName: snapshot['pulipName'],
+    );
   }
 }

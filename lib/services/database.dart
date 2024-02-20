@@ -65,7 +65,6 @@ class DatabaseMethods {
 
   //Add Pulip with lessons
   Future<String> addPulipLessons({
-    required String subject,
     required String date,
     required String time,
     required String instructorName,
@@ -81,7 +80,6 @@ class DatabaseMethods {
         uuid: uuid,
         pulipName: pulipName,
         instructorName: instructorName,
-        subject: subject,
         uid: FirebaseAuth.instance.currentUser!.uid,
         date: date,
       );

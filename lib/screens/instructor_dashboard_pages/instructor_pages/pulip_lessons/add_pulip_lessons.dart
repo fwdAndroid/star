@@ -27,11 +27,7 @@ class _PulipLessonsState extends State<PulipLessons> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchData().then((data) {
-      setState(() {
-        dropdownItems = data;
-      });
-    });
+
     fetchDataPupil().then((value) {
       setState(() {
         dropdownPulip = value;
@@ -52,26 +48,6 @@ class _PulipLessonsState extends State<PulipLessons> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DropdownButtonFormField<String>(
-              value: selectedValue,
-              onChanged: (value) {
-                setState(() {
-                  selectedValue = value;
-                });
-              },
-              items: dropdownItems.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              decoration: InputDecoration(
-                labelText: 'Select an Subject',
-              ),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: DropdownButtonFormField<String>(
@@ -131,11 +107,7 @@ class _PulipLessonsState extends State<PulipLessons> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12))),
                             onPressed: () async {
-                              if (selectedValue!.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text("Subject is Required")));
-                              } else if (pulip!.isEmpty) {
+                              if (pulip!.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text("Pulip is Required")));
@@ -153,7 +125,6 @@ class _PulipLessonsState extends State<PulipLessons> {
                                 });
                                 await DatabaseMethods().addPulipLessons(
                                     date: _dateController.text,
-                                    subject: selectedValue!,
                                     time: _timeController.text,
                                     instructorName: widget.instructorName,
                                     pulipName: pulip!);
@@ -183,20 +154,6 @@ class _PulipLessonsState extends State<PulipLessons> {
   }
 
   //Functions
-  Future<List<String>> fetchData() async {
-    List<String> data = [];
-
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('lessons')
-        .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    querySnapshot.docs.forEach((doc) {
-      data.add(doc['subject']);
-    });
-
-    return data;
-  }
 
   Future<List<String>> fetchDataPupil() async {
     List<String> S = [];

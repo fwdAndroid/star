@@ -219,7 +219,6 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                                               time: data['time'],
                                               date: data['date'],
                                               status: data['status'],
-                                              subject: data['subject'],
                                             )));
                               },
                               child: Text(

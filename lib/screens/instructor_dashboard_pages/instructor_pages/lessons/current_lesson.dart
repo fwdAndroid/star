@@ -26,7 +26,7 @@ class _CurrentLessonState extends State<CurrentLesson> {
         if (snapshot.data!.docs.isEmpty) {
           return Center(
             child: Text(
-              "No Upcoming Lesson",
+              "Lesson Record Found",
               style: TextStyle(color: textColor),
             ),
           );

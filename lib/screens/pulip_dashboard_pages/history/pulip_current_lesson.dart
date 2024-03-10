@@ -1,22 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lesson_detail.dart';
 import 'package:star/utils/colors.dart';
 
-class PastLesson extends StatefulWidget {
-  const PastLesson({super.key});
+class PulipCurrentLesson extends StatefulWidget {
+  final name;
+  PulipCurrentLesson({super.key, required this.name});
 
   @override
-  State<PastLesson> createState() => _PastLessonState();
+  State<PulipCurrentLesson> createState() => _PulipCurrentLessonState();
 }
 
-class _PastLessonState extends State<PastLesson> {
+class _PulipCurrentLessonState extends State<PulipCurrentLesson> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: getPulipLesson(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection("pulipLessons")
+          .where("pulipName", isEqualTo: widget.name)
+          .where("status", isEqualTo: "active")
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -26,7 +30,7 @@ class _PastLessonState extends State<PastLesson> {
         if (snapshot.data!.docs.isEmpty) {
           return Center(
             child: Text(
-              "No Lesson Record Found",
+              "Lesson Record Found",
               style: TextStyle(color: textColor),
             ),
           );
@@ -83,10 +87,3 @@ class _PastLessonState extends State<PastLesson> {
 }
 
 //Functions
-Stream<QuerySnapshot> getPulipLesson() {
-  return FirebaseFirestore.instance
-      .collection("pulipLessons")
-      .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-      .where("status", isEqualTo: "inactive")
-      .snapshots();
-}

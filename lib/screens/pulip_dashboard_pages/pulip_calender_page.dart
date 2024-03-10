@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:star/screens/pulip_dashboard_pages/history/pulip_lesson_history.dart';
 import 'package:star/utils/colors.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -32,9 +32,19 @@ class _PulipCalenderState extends State<PulipCalender> {
     final currentMonth = DateTime(now.year, now.month, 1);
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => PulipLessonHistory()));
+              },
+              child: Text("Lesson History"))
+        ],
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: const Text('Instructor Calendar'),
+        title: const Text('Pulip Calendar'),
       ),
       body: Column(
         children: [

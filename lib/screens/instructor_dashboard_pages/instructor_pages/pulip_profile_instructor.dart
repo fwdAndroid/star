@@ -239,22 +239,22 @@ class _PulipProfileInsturctorState extends State<PulipProfileInsturctor> {
                 "Show Pulip Skills",
                 style: TextStyle(color: bottomColor),
               )),
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (builder) => PupilReport(
-                              instrutorId:
-                                  FirebaseAuth.instance.currentUser!.uid,
-                              pupilName: widget.name,
-                              pupilId: widget.id,
-                            )));
-              },
-              child: Text(
-                "Generate Report",
-                style: TextStyle(color: bottomColor),
-              ))
+          // TextButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (builder) => PupilReport(
+          //                     instrutorId:
+          //                         FirebaseAuth.instance.currentUser!.uid,
+          //                     pupilName: widget.name,
+          //                     pupilId: widget.id,
+          //                   )));
+          //     },
+          //     child: Text(
+          //       "Generate Report",
+          //       style: TextStyle(color: bottomColor),
+          //     ))
         ],
       ),
     );

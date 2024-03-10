@@ -6,8 +6,6 @@ import 'package:star/screens/auth/auth.dart';
 import 'package:star/utils/colors.dart';
 import 'package:star/utils/image_pick.dart';
 
-import 'report/report_show.dart';
-
 class InstructorProfileScreen extends StatefulWidget {
   const InstructorProfileScreen({super.key});
 
@@ -187,31 +185,31 @@ class _InstructorProfileScreenState extends State<InstructorProfileScreen> {
           const SizedBox(
             height: 12,
           ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (builder) => ReportsShow()));
-              },
-              child: Text(
-                'Reports',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.acme(
-                  color: colorwhite,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: bottomColor,
-                  fixedSize: Size(301, 50),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8))),
-            ),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
+          // Center(
+          //   child: ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.push(context,
+          //           MaterialPageRoute(builder: (builder) => ReportsShow()));
+          //     },
+          //     child: Text(
+          //       'Reports',
+          //       textAlign: TextAlign.center,
+          //       style: GoogleFonts.acme(
+          //         color: colorwhite,
+          //         fontSize: 17,
+          //         fontWeight: FontWeight.w400,
+          //       ),
+          //     ),
+          //     style: ElevatedButton.styleFrom(
+          //         backgroundColor: bottomColor,
+          //         fixedSize: Size(301, 50),
+          //         shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(8))),
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 12,
+          // ),
           Center(
             child: ElevatedButton(
               onPressed: () {},

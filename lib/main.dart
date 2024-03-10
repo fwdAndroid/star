@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:star/firebase_options.dart';
+import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lesson_detail.dart';
 import 'package:star/splash_screen.dart';
 
 void main() async {
@@ -8,7 +10,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => LessonDetailStateNotifier(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

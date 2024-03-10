@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/add_pupil.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lesson_detail.dart';
 import 'package:star/screens/instructor_dashboard_pages/instructor_pages/lessons/lessons.dart';
@@ -210,6 +211,9 @@ class _InstructorHomePageState extends State<InstructorHomePage> {
                           // Add more fields as needed
                           trailing: TextButton(
                               onPressed: () {
+                                Provider.of<LessonDetailStateNotifier>(context,
+                                        listen: false)
+                                    .showButtons();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

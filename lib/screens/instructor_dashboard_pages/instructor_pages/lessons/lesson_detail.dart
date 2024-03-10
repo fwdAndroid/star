@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:star/screens/dasboard/instructor_dashboard.dart';
 import 'package:star/utils/colors.dart';
+import 'package:provider/provider.dart';
 
 class LessonDetail extends StatefulWidget {
   final date;
   final time;
   final pulipName;
   final status;
-
   final uuid;
+
   LessonDetail({
     super.key,
     required this.pulipName,
@@ -24,10 +25,26 @@ class LessonDetail extends StatefulWidget {
   State<LessonDetail> createState() => _LessonDetailState();
 }
 
+class LessonDetailStateNotifier extends ChangeNotifier {
+  bool showButton = true;
+
+  void hideButton() {
+    showButton = false;
+    notifyListeners();
+  }
+
+  void showButtons() {
+    showButton = true;
+    notifyListeners();
+  }
+}
+
 class _LessonDetailState extends State<LessonDetail> {
   bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
+    final lessonDetailState = Provider.of<LessonDetailStateNotifier>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -179,41 +196,39 @@ class _LessonDetailState extends State<LessonDetail> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Center(
-                      child: _isLoading
-                          ? Center(child: CircularProgressIndicator())
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: buttonColor,
-                                  fixedSize: Size(300, 50),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              onPressed: () async {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                await FirebaseFirestore.instance
-                                    .collection("pulipLessons")
-                                    .doc(widget.uuid)
-                                    .update({"status": "inactive"});
+                  : lessonDetailState.showButton
+                      ? ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: buttonColor,
+                              fixedSize: Size(300, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                          onPressed: () async {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            await FirebaseFirestore.instance
+                                .collection("pulipLessons")
+                                .doc(widget.uuid)
+                                .update({"status": "inactive"});
 
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (builder) =>
-                                            InstructorDashboard()));
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text("Lecture Completed")));
-                              },
-                              child: Text(
-                                "Lecture Complete",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                    ),
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (builder) =>
+                                        InstructorDashboard()));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Lecture Completed")));
+                          },
+                          child: Text(
+                            "Lecture Complete",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      : Container(),
             ),
           ),
         ],

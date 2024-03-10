@@ -70,7 +70,6 @@ class _SeeAllLessonsState extends State<SeeAllLessons> {
                                           time: data['time'],
                                           date: data['date'],
                                           status: data['status'],
-                                          subject: data['subject'],
                                         )));
                           },
                           child: Text(

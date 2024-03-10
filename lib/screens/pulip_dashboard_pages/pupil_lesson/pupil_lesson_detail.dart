@@ -7,14 +7,12 @@ class LessonDetailPupil extends StatefulWidget {
   final time;
   final instructorName;
   final status;
-  final subject;
   final uuid;
   LessonDetailPupil({
     super.key,
     required this.instructorName,
     required this.time,
     required this.status,
-    required this.subject,
     required this.date,
     required this.uuid,
   });
@@ -57,41 +55,7 @@ class _LessonDetailPupilState extends State<LessonDetailPupil> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.instructorName,
-                    style: GoogleFonts.abhayaLibre(
-                      color: textColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Divider(
-              color: textColor.withOpacity(.2),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Subject',
-                  style: GoogleFonts.abhayaLibre(
-                    color: textColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(
-                  width: 70,
-                ),
-                SizedBox(
-                  child: Text(
-                    widget.subject,
+                    widget.instructorName..toString(),
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -125,7 +89,7 @@ class _LessonDetailPupilState extends State<LessonDetailPupil> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.time,
+                    widget.time..toString(),
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -159,7 +123,7 @@ class _LessonDetailPupilState extends State<LessonDetailPupil> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.date,
+                    widget.date.toString(),
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,
@@ -193,7 +157,7 @@ class _LessonDetailPupilState extends State<LessonDetailPupil> {
                 ),
                 SizedBox(
                   child: Text(
-                    widget.status,
+                    widget.status.toString(),
                     style: GoogleFonts.abhayaLibre(
                       color: textColor,
                       fontSize: 16,

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:star/screens/auth/auth.dart';
 import 'package:star/services/auth.dart';
 import 'package:star/utils/colors.dart';
 import 'package:star/utils/image_pick.dart';
@@ -285,7 +286,10 @@ class _AddPupilState extends State<AddPupil> {
                                   SnackBar(
                                       content:
                                           Text("Pulip is Added Successfully")));
-                              Restart.restartApp();
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (builder) => AuthScreen()));
                             },
                             child: Text(
                               "Add Pupil",

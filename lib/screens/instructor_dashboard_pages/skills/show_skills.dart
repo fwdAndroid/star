@@ -51,14 +51,13 @@ class _ShowSkillsState extends State<ShowSkills> {
                   List<Map<String, dynamic>>.from(data['skills']);
               return Column(
                 children: [
-                  for (int i = 1; i < skillsList.length; i++)
+                  for (int i = 0; i < skillsList.length; i++)
                     Card(
                       child: ListTile(
                         title: Text(
                           'Skill Name: ${skillsList[i]['name'].toString()}',
                           style: TextStyle(color: bottomColor),
                         ),
-                        // ... other fields ...
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

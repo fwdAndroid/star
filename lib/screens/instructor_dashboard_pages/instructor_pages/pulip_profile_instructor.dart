@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:star/screens/instructor_dashboard_pages/report/pupil_report.dart';
 import 'package:star/screens/instructor_dashboard_pages/skills/show_skills.dart';
 import 'package:star/utils/colors.dart';
 

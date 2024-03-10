@@ -19,17 +19,17 @@ class _InstructorSendState extends State<InstructorSend> {
         return ListTile(
             leading: Image.asset("assets/r.png"),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => InstructorChatPage(
-                      // paitientid: clubData['userId'],
-                      // paitientname: clubData['user_name'],
-                      // doctorId: clubData['clubId'],
-                      // doctorName: clubData['clubName'],
-                      ),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (builder) => InstructorChatPage(
+              //         // paitientid: clubData['userId'],
+              //         // paitientname: clubData['user_name'],
+              //         // doctorId: clubData['clubId'],
+              //         // doctorName: clubData['clubName'],
+              //         ),
+              //   ),
+              // );
             },
             trailing: Text(
               'just now',

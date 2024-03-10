@@ -19,14 +19,6 @@ class _PulipHomePageState extends State<PulipHomePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.notifications,
-                color: bottomColor,
-              ))
-        ],
         title: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("pulip")
@@ -72,31 +64,6 @@ class _PulipHomePageState extends State<PulipHomePage> {
             var document = snapshot.data;
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        fillColor: fillColors,
-                        filled: true,
-                        labelText: 'Search',
-                        border: InputBorder.none,
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              color: fillColors,
-                            )),
-                        errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              color: fillColors,
-                            )),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              color: fillColors,
-                            ))),
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -244,14 +211,13 @@ class _PulipHomePageState extends State<PulipHomePage> {
                               List<Map<String, dynamic>>.from(data['skills']);
                           return Column(
                             children: [
-                              for (int i = 1; i < skillsList.length; i++)
+                              for (int i = 0; i < skillsList.length; i++)
                                 Card(
                                   child: ListTile(
                                     title: Text(
                                       'Skill Name: ${skillsList[i]['name'].toString()}',
                                       style: TextStyle(color: bottomColor),
                                     ),
-                                    // ... other fields ...
                                     subtitle: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,

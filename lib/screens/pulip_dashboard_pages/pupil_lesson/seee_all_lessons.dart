@@ -54,7 +54,7 @@ class _SeeAllLessonsState extends State<SeeAllLessons> {
                         style: TextStyle(color: bottomColor),
                       ),
                       subtitle: Text(
-                        'Subject: ${data['subject'].toString()}',
+                        'Pulip Name: ${data['pulipName'].toString()}',
                         style: TextStyle(color: bottomColor),
                       ),
                       // Add more fields as needed
